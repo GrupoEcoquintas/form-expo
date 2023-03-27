@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+import './index.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -9,9 +9,13 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: 'Gotham Ultra, sans-serif'
   },
   appBar: {
     backgroundColor: '#1E9344',
+  },
+  button: {
+    fontFamily: 'Gotham Ultra, sans-serif'
   }
 }));
 
@@ -25,7 +29,10 @@ const Header = () => {
           <Typography variant="h6" className={classes.title}>
             GrupoEcoquintas
           </Typography>
-          <Button color="inherit">Inicio</Button>
+          <Button color="inherit" 
+          className={classes.button}
+          >Inicio
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

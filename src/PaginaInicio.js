@@ -3,11 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, TextField, Button } from '@material-ui/core';
 import Footer from './Footer'
 import Header from './Header';
-
+import './index.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    fontFamily: 'Gotham Ultra, sans-serif'
   },
   formContainer: {
     marginTop: theme.spacing(4),
@@ -15,10 +16,11 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     marginTop: theme.spacing(2),
     backgroundColor: '#FFC700',
+    fontFamily: 'Gotham Book, sans-serif'
   },
   main: {
     marginBottom: theme.spacing(8),
-  }
+  },
 }));
 
 const PaginaInicio = () => {
@@ -28,7 +30,7 @@ const PaginaInicio = () => {
     <div>
       <main className={classes.main} >
         <Header />
-        <Container maxWidth="md">
+        <Container maxWidth="md" className={classes.root} >
           <Grid container spacing={3} className={classes.formContainer} >
             <Grid item xs={12}>
               <h1>¡Déjanos tus datos y participa!</h1>
