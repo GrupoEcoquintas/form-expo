@@ -26,10 +26,12 @@ const useStyles = makeStyles((theme) => ({
 const PaginaInicio = () => {
   const classes = useStyles();
   const [cedula, setCedula] = useState("");
-  const [tipoIdentificacion, setTipoIdentificacion] = useState('nacional');
+  const [tipoIdentificacion, setTipoIdentificacion] = useState("nacional");
+  const [nombre, setNombre] = useState("");
+  const [userData, setUserData] = useState("");
+  const [cedulaTemporal, setCedulaTemporal] = useState("");
 
-  const comprobarCedula = (event) => {
-    const tipoIdentificacion = event.target.tipoIdentificacion.value;
+  const comprobarCedula = () => {
     fetch(`https://api.hacienda.go.cr/fe/ae?identificacion=${cedula}`)
       .then((response) => response.json())
       .then((data) => {
@@ -37,10 +39,19 @@ const PaginaInicio = () => {
           // Aquí agregar la lógica para guardar el campo en la tabla
           console.log("Cédula válida");
         } else {
-          console.log(data);
+          setUserData(data);
+          console.log(userData);
+          console.log("Nombre Completo", data.nombre);
         }
       })
       .catch((error) => console.error(error));
+  };
+
+  const handleTipoIdentificacionChange = (event) => {
+    setTipoIdentificacion(event.target.value);
+    if (event.target.value === "extranjero") {
+      setCedula("");
+    }
   };
 
   return (
@@ -60,8 +71,8 @@ const PaginaInicio = () => {
                     type="radio"
                     name="tipoIdentificacion"
                     value="nacional"
-                    checked={tipoIdentificacion === 'nacional'}
-                    onChange={(e) => setTipoIdentificacion(e.target.value)}
+                    checked={tipoIdentificacion === "nacional"}
+                    onChange={handleTipoIdentificacionChange}
                   />
                   Nacional
                 </label>
@@ -70,20 +81,42 @@ const PaginaInicio = () => {
                     type="radio"
                     name="tipoIdentificacion"
                     value="extranjero"
-                    checked={tipoIdentificacion === 'extranjero'}
-                    onChange={(e) => setTipoIdentificacion(e.target.value)}
+                    checked={tipoIdentificacion === "extranjero"}
+                    onChange={handleTipoIdentificacionChange}
                   />
                   Extranjero
                 </label>
               </div>
             </Grid>
-
-            {tipoIdentificacion === 'nacional' ?
-              <Grid item xs={12} md={6}>
-                <TextField id="cedula" label="Cédula" fullWidth value={cedula} onChange={(event) => setCedula(event.target.value)} />
-              </Grid>
-            :
+            {tipoIdentificacion === "nacional" ? (
               <>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    id="cedula"
+                    label="Cédula"
+                    fullWidth
+                    value={cedula}
+                    onChange={(event) => {
+                      setCedula(event.target.value);
+                      setUserData(null);
+                    }}
+                    onBlur={comprobarCedula}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  {userData && tipoIdentificacion === "nacional" && (
+                    <div>
+                      <p style={{ fontSize: "15px" }}>{userData.nombre}</p>
+                    </div>
+                  )}
+                  <TextField id="email" label="Correo electrónico" fullWidth />
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Grid item xs={12} md={6}>
+                  <TextField id="cedula" label="Cédula" fullWidth />
+                </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField id="nombre" label="Nombre Completo" fullWidth />
                 </Grid>
@@ -91,15 +124,22 @@ const PaginaInicio = () => {
                   <TextField id="email" label="Correo electrónico" fullWidth />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField id="cedula" label="Cédula" fullWidth />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField id="location" label="Lugar de domicilio" fullWidth />
+                  <TextField
+                    id="location"
+                    label="Lugar de domicilio"
+                    fullWidth
+                  />
                 </Grid>
               </>
-            }
+            )}
+
             <Grid item xs={12}>
-              <Button variant="contained" color="secondary" className={classes.submitButton} onClick={comprobarCedula}>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.submitButton}
+                onClick={comprobarCedula}
+              >
                 Enviar
               </Button>
             </Grid>
@@ -110,6 +150,5 @@ const PaginaInicio = () => {
     </div>
   );
 };
-
 
 export default PaginaInicio;
