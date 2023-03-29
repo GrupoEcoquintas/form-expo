@@ -95,7 +95,6 @@ const PaginaInicio = () => {
                     id="cedula"
                     label="Cédula"
                     fullWidth
-                    value={cedula}
                     onChange={(event) => {
                       setCedula(event.target.value);
                       setUserData(null);
@@ -115,7 +114,7 @@ const PaginaInicio = () => {
             ) : (
               <>
                 <Grid item xs={12} md={6}>
-                  <TextField id="cedula" label="Cédula" fullWidth />
+                  <TextField id="cedula2" label="Cédula" fullWidth />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField id="nombre" label="Nombre Completo" fullWidth />
