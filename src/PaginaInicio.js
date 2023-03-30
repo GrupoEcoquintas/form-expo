@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
   submitButton: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(3),
     backgroundColor: "#FFC700",
     fontFamily: "Gotham Book, sans-serif",
   },
@@ -29,7 +29,9 @@ const PaginaInicio = () => {
   const [tipoIdentificacion, setTipoIdentificacion] = useState("nacional");
   const [nombre, setNombre] = useState("");
   const [userData, setUserData] = useState("");
-  const [cedulaTemporal, setCedulaTemporal] = useState("");
+  const [cedulaExtranjero, setCedulaExtranjero] = useState("");
+  const [nombreExtranjero, setNombreExtranjero] = useState("");
+  const [userDataExtranjero, setUserDataExtranjero] = useState("");
 
   const comprobarCedula = () => {
     fetch(`https://api.hacienda.go.cr/fe/ae?identificacion=${cedula}`)
@@ -40,6 +42,7 @@ const PaginaInicio = () => {
           console.log("Cédula válida");
         } else {
           setUserData(data);
+          setNombre(data.nombre);
           console.log(userData);
           console.log("Nombre Completo", data.nombre);
         }
@@ -99,25 +102,47 @@ const PaginaInicio = () => {
                       setCedula(event.target.value);
                       setUserData(null);
                     }}
-                    onBlur={comprobarCedula}
+                    onBlur={(event) => {
+                      if (event.target.value !== "") {
+                        comprobarCedula();
+                      }
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  {userData && tipoIdentificacion === "nacional" && (
-                    <div>
-                      <p style={{ fontSize: "15px" }}>{userData.nombre}</p>
-                    </div>
-                  )}
+                  <TextField
+                    id="nombre"
+                    label="Nombre Completo"
+                    fullWidth
+                    value={userData?.nombre || nombre}
+                    onChange={(event) => setNombre(event.target.value)}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
                   <TextField id="email" label="Correo electrónico" fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    id="location"
+                    label="Lugar de domicilio"
+                    fullWidth
+                  />
                 </Grid>
               </>
             ) : (
               <>
                 <Grid item xs={12} md={6}>
-                  <TextField id="cedula2" label="Cédula" fullWidth />
+                  <TextField id="cedula" label="Identificacion" fullWidth />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField id="nombre" label="Nombre Completo" fullWidth />
+                  <TextField
+                    id="nombre"
+                    label="Nombre Completo"
+                    fullWidth
+                    value={userData?.nombre || nombre}
+                    onChange={(event) => setNombre(event.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField id="email" label="Correo electrónico" fullWidth />
@@ -137,7 +162,7 @@ const PaginaInicio = () => {
                 variant="contained"
                 color="secondary"
                 className={classes.submitButton}
-                onClick={comprobarCedula}
+                style={{ marginBottom: "80px" }}
               >
                 Enviar
               </Button>
