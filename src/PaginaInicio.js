@@ -29,9 +29,7 @@ const PaginaInicio = () => {
   const [tipoIdentificacion, setTipoIdentificacion] = useState("nacional");
   const [nombre, setNombre] = useState("");
   const [userData, setUserData] = useState("");
-  const [cedulaExtranjero, setCedulaExtranjero] = useState("");
-  const [nombreExtranjero, setNombreExtranjero] = useState("");
-  const [userDataExtranjero, setUserDataExtranjero] = useState("");
+
 
   const comprobarCedula = () => {
     fetch(`https://api.hacienda.go.cr/fe/ae?identificacion=${cedula}`)
