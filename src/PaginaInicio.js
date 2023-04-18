@@ -4,6 +4,7 @@ import { Container, Grid, TextField, Button } from "@material-ui/core";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./index.css";
+const request = require('request');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(8),
   },
 }));
-
 
 const PaginaInicio = () => {
   const classes = useStyles();
@@ -45,7 +45,6 @@ const PaginaInicio = () => {
         if (data) {
           // Aquí agregar la lógica para guardar el campo en la tabla
           setUserData(data);
-          console.log(data);
           console.log("Cédula válida");
         } else {
           console.log("else");
@@ -70,15 +69,36 @@ const PaginaInicio = () => {
 
   const enviarFormulario = () => {
     if (tipoIdentificacion === "nacional") {
-      console.log("Nacional", [
+      const clienteNacional = [
+        1,
         cedula,
         userData.nombre,
         emailNacional,
         locationNacional,
-      ]);
+        1,
+        11,
+      ];
+      console.log(clienteNacional);
+      // Hacer una solicitud POST con fetch
+      const options = {
+        uri: 'http://44.209.226.143:5000/expoform',
+        method: 'POST',
+        json: clienteNacional,
+        headers: {
+          'Content-Type': 'application/json',
+          'token': '3e26b17c-3e96-40d6-91fa-7f355bf2c570'
+        }
+      };
+      request(options, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          console.log('Cliente nacional creado exitosamente!');
+        } else {
+          console.log('Error al crear el cliente nacional');
+        }
+      });
     }
     if (tipoIdentificacion === "extranjero") {
-      console.log("Extranjero", [
+      const clienteExtranjero = [
         2,
         cedulaExtranjero,
         nombreExtranjero,
@@ -86,9 +106,27 @@ const PaginaInicio = () => {
         locationExtranjero,
         1,
         11,
-      ]);
+      ];
+      console.log("Extranjero", clienteExtranjero);
+
+      // Hacer una solicitud POST con fetch
+      const options = {
+        uri: 'http://44.209.226.143:5000/expoform',
+        method: 'POST',
+        json: clienteExtranjero,
+        headers: {
+          'Content-Type': 'application/json',
+          'token': '3e26b17c-3e96-40d6-91fa-7f355bf2c570'
+        }
+      };
+      request(options, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          console.log('Cliente extranjero creado exitosamente!');
+        } else {
+          console.log('Error al crear el cliente extranjero');
+        }
+      });
     }
-    // Cierra la conexión con la base de datos
   };
 
   return (

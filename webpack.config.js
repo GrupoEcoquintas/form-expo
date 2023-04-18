@@ -15,13 +15,4 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-  fallback: {
-    crypto: require.resolve('crypto-browserify'),
-    tls: require.resolve('tls-browserify'),
-    net: require.resolve('net-browserify'),
-    stream: require.resolve('stream-browserify'),
-    assert: require.resolve('assert/')
-  }
-}
 };

@@ -31,6 +31,7 @@ const Header = () => {
           </Typography>
           <Button color="inherit" 
           className={classes.button}
+          onClick={()=> window.location.reload()}
           >Inicio
           </Button>
         </Toolbar>
