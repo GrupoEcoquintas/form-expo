@@ -23,26 +23,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const PaginaInicio = () => {
   const classes = useStyles();
-  const [cedula, setCedula] = useState("");
   const [tipoIdentificacion, setTipoIdentificacion] = useState("nacional");
+  const [cedula, setCedula] = useState("");
   const [nombre, setNombre] = useState("");
+  const [emailNacional, setEmailNacional] = useState("");
+  const [locationNacional, setlocationNacional] = useState("");
   const [userData, setUserData] = useState("");
-
+  const [cedulaExtranjero, setCedulaExtranjero] = useState("");
+  const [nombreExtranjero, setNombreExtranjero] = useState("");
+  const [userDataExtranjero, setUserDataExtranjero] = useState(null);
+  const [emailExtranjero, setEmailExtranjero] = useState("");
+  const [locationExtranjero, setLocationExtranjero] = useState("");
 
   const comprobarCedula = () => {
     fetch(`https://api.hacienda.go.cr/fe/ae?identificacion=${cedula}`)
       .then((response) => response.json())
       .then((data) => {
-        if (data.existe === "S") {
+        if (data) {
           // Aquí agregar la lógica para guardar el campo en la tabla
+          setUserData(data);
+          console.log(data);
           console.log("Cédula válida");
         } else {
-          setUserData(data);
-          setNombre(data.nombre);
-          console.log(userData);
-          console.log("Nombre Completo", data.nombre);
+          console.log("else");
         }
       })
       .catch((error) => console.error(error));
@@ -52,7 +58,37 @@ const PaginaInicio = () => {
     setTipoIdentificacion(event.target.value);
     if (event.target.value === "extranjero") {
       setCedula("");
+      setNombre("");
+      setEmailNacional("");
+      setlocationNacional("");
     }
+    setCedulaExtranjero("");
+    setNombreExtranjero("");
+    setEmailExtranjero("");
+    setLocationExtranjero("");
+  };
+
+  const enviarFormulario = () => {
+    if (tipoIdentificacion === "nacional") {
+      console.log("Nacional", [
+        cedula,
+        userData.nombre,
+        emailNacional,
+        locationNacional,
+      ]);
+    }
+    if (tipoIdentificacion === "extranjero") {
+      console.log("Extranjero", [
+        2,
+        cedulaExtranjero,
+        nombreExtranjero,
+        emailExtranjero,
+        locationExtranjero,
+        1,
+        11,
+      ]);
+    }
+    // Cierra la conexión con la base de datos
   };
 
   return (
@@ -96,10 +132,8 @@ const PaginaInicio = () => {
                     id="cedula"
                     label="Cédula"
                     fullWidth
-                    onChange={(event) => {
-                      setCedula(event.target.value);
-                      setUserData(null);
-                    }}
+                    value={userData?.cedula || cedula}
+                    onChange={(event) => setCedula(event.target.value)}
                     onBlur={(event) => {
                       if (event.target.value !== "") {
                         comprobarCedula();
@@ -118,38 +152,77 @@ const PaginaInicio = () => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <TextField id="email" label="Correo electrónico" fullWidth />
+                  <TextField
+                    id="email"
+                    label="Correo electrónico"
+                    fullWidth
+                    value={userData?.emailNacional || emailNacional}
+                    onChange={(event) => setEmailNacional(event.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     id="location"
                     label="Lugar de domicilio"
                     fullWidth
+                    value={userData?.locationNacional || locationNacional}
+                    onChange={(event) =>
+                      setlocationNacional(event.target.value)
+                    }
                   />
                 </Grid>
               </>
             ) : (
               <>
                 <Grid item xs={12} md={6}>
-                  <TextField id="cedula" label="Identificacion" fullWidth />
-                </Grid>
-                <Grid item xs={12} md={6}>
                   <TextField
-                    id="nombre"
-                    label="Nombre Completo"
+                    id="id"
+                    label="Identificacion"
                     fullWidth
-                    value={userData?.nombre || nombre}
-                    onChange={(event) => setNombre(event.target.value)}
+                    value={
+                      userDataExtranjero?.cedulaExtranjero || cedulaExtranjero
+                    }
+                    onChange={(event) =>
+                      setCedulaExtranjero(event.target.value)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField id="email" label="Correo electrónico" fullWidth />
+                  <TextField
+                    id="nombreExtranjero"
+                    label="Nombre Completo"
+                    fullWidth
+                    value={
+                      userDataExtranjero?.nombreExtranjero || nombreExtranjero
+                    }
+                    onChange={(event) =>
+                      setNombreExtranjero(event.target.value)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    id="emailExtranjero"
+                    label="Correo electrónico"
+                    fullWidth
+                    value={
+                      userDataExtranjero?.emailExtranjero || emailExtranjero
+                    }
+                    onChange={(event) => setEmailExtranjero(event.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     id="location"
                     label="Lugar de domicilio"
                     fullWidth
+                    value={
+                      userDataExtranjero?.locationExtranjero ||
+                      locationExtranjero
+                    }
+                    onChange={(event) =>
+                      setLocationExtranjero(event.target.value)
+                    }
                   />
                 </Grid>
               </>
@@ -161,6 +234,7 @@ const PaginaInicio = () => {
                 color="secondary"
                 className={classes.submitButton}
                 style={{ marginBottom: "80px" }}
+                onClick={enviarFormulario}
               >
                 Enviar
               </Button>
