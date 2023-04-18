@@ -81,7 +81,7 @@ const PaginaInicio = () => {
       console.log(clienteNacional);
       // Hacer una solicitud POST con fetch
       const options = {
-        uri: 'http://44.209.226.143:5000/expoform',
+        uri: 'http://44.209.226.143:5000/expoform/',
         method: 'POST',
         json: clienteNacional,
         headers: {
@@ -111,7 +111,7 @@ const PaginaInicio = () => {
 
       // Hacer una solicitud POST con fetch
       const options = {
-        uri: 'http://44.209.226.143:5000/expoform',
+        uri: 'http://44.209.226.143:5000/expoform/',
         method: 'POST',
         json: clienteExtranjero,
         headers: {
