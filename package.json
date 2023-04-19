@@ -22,7 +22,6 @@
     "request": "^2.88.2",
     "stream-browserify": "^3.0.0",
     "tls-browserify": "^0.2.2",
-    "typescript": "^5.0.4",
     "web-vitals": "^2.1.4",
     "ws": "^8.13.0"
   },
@@ -51,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "typescript": "^4.9.5",
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",

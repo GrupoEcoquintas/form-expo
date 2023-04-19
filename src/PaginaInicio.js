@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     backgroundColor: "#FFC700",
     fontFamily: "Gotham Book, sans-serif",
+    "&:active, &:focus": {
+      backgroundColor: "green", // Cambia el color de fondo cuando se hace clic
+    },
   },
   main: {
     marginBottom: theme.spacing(8),
@@ -76,7 +79,7 @@ const PaginaInicio = () => {
         emailNacional,
         locationNacional,
         1,
-        11,
+        "2023-04-18",
       ];
       console.log(clienteNacional);
       // Hacer una solicitud POST con fetch
@@ -105,7 +108,7 @@ const PaginaInicio = () => {
         emailExtranjero,
         locationExtranjero,
         1,
-        11,
+        "2023-04-18",
       ];
       console.log("Extranjero", clienteExtranjero);
 
@@ -270,7 +273,7 @@ const PaginaInicio = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                className={classes.submitButton}
+                className={`${classes.submitButton} ${classes.activeSubmitButton}`}
                 style={{ marginBottom: "80px" }}
                 onClick={enviarFormulario}
               >
